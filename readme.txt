@@ -7,3 +7,5 @@ An elevator can have many people, but each person can only be on a single elevat
 People have a current floor and an intended floor.
 
 I found this assignment very challenging and was unable to achieve full functionality. 
+
+<a href="https://codeclimate.com/github/mshem/Elevators"><img src="https://codeclimate.com/github/mshem/Elevators/badges/gpa.svg" /></a>
