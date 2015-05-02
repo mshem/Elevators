@@ -21,10 +21,10 @@ class Building
 		end
 
 		@numelevators.to_i.times do |e|
-			@elevators.push(Elevator.new)
+			@elevators.push(Elevator.new(e))
 
 		end
-
+			update
 
 	end
 
@@ -52,7 +52,10 @@ class Building
 	end
 
 	def update_floors
-
+		f = @floors_left.pop
+		if !f.nil?
+			call_elevator(f.number)
+		end
 		@floors.each do |f|
 		f.update
 		end
@@ -60,9 +63,16 @@ class Building
 	end
 
 	def call_elevator(floor)
-		find_available_elevators
-		e = @available_elevators.pop
-		e.set_destination(floor)
+		if !@floors[floor].nil?
+				find_available_elevators
+				e = @available_elevators.pop
+				if e.nil?
+					@floors_left.push(@floors[floor])
+				else
+				e.set_destination(floor)
+			end
+		end
+
 	end
 
 

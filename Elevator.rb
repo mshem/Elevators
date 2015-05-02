@@ -3,7 +3,8 @@ class Elevator
   require './Floor.rb'
 
 
-  def initialize
+  def initialize(n)
+    @number = n
     @ELEV_RESTING_FLOOR=0
     @current_floor=@ELEV_RESTING_FLOOR
     @intended_floor=@current_floor

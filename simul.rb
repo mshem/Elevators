@@ -32,11 +32,13 @@ end
 
 
 @building.to_s
-@building.call_elevator(3) 
+@building.call_elevator(2) 
+@building.call_elevator(0)
+@building.call_elevator(1)
 
-@numticks.to_i.times do |t|
+
+6.times do |t|
 	@building.update
 	@building.to_s
 end 
-
 

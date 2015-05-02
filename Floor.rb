@@ -13,7 +13,9 @@ class Floor
 	end
 
 	def add_elevator(e)
+		if !@elevators.include?(e)
 		@elevators.push(e)
+		end
 	end
 
 	def remove_elevator(e)
@@ -27,6 +29,10 @@ class Floor
 				remove_elevator(e)
 			end
 		end
+	end
+
+	def number
+		@number
 	end
 
 	def to_s
