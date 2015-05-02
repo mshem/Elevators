@@ -7,20 +7,26 @@ class Elevator
     @number = n
     @ELEV_RESTING_FLOOR=0
     @current_floor=@ELEV_RESTING_FLOOR
-    @intended_floor=@current_floor
+    @intended_floors=Array.new
+    @intended_floors.push(@current_floor)
+    @people = Array.new
   end
 
   def current_floor
     @current_floor
   end
 
-  def intended_floor
-    @intended_floor
+  def intended_floors
+    @intended_floors
+  end
+
+  def next_floor
+    intended_floors.last
   end
 
   def set_destination(floor)
     if !(floor.to_i < 0 || floor.to_i > $numfloors.to_i - 1)
-    @intended_floor=floor
+    @intended_floors.push(floor)
     end
   end
 
@@ -35,24 +41,52 @@ class Elevator
   def update
     if !available
       move
+      drop_off
     end
   end
 
 
   def move
-      if @current_floor < @intended_floor
+      if @current_floor < @intended_floors.last
         move_up
       else 
-        if @current_floor > @intended_floor
+        if @current_floor > @intended_floors.last
         move_down
-      end
+        else
+          @intended_floors.pop
+        end
       end
   end
 
   def available
-    current_floor == intended_floor
+    intended_floors.last.nil?
   end
 
+  def pick_up(person)
+    if (person.current_floor==@current_floor)
+    set_destination(person.intended_floor)
+    @people.push(person)
+    else
+      puts "cant pick up from different floor"
+    end
+  end
+
+  def drop_off
+    p = @people.pop
+    if !p.nil?
+      if p.intended_floor == @current_floor
+        @intended_floors.pop
+        return p
+      else
+       @people.push(p)
+      end
+    end
+    return p
+  end
+
+  def to_s
+    "Elevator #{@numer} has #{@people.length} people. "
+  end
 end
 
 

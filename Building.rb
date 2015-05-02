@@ -1,20 +1,20 @@
 class Building
 	require './Floor.rb'
 	require './Elevator.rb'
+	require './Person.rb'
 
 	attr_reader :floors, :elevators
 	#elevators store a floor and the people on them
 	#people store their current floor and intended floor
 	#floors is  value
-	def initialize(floors, elevators)
+	def initialize(floors, elevators, people)
 		@numfloors = floors
 		@numelevators = elevators
 		@floors = Array.new
 		@elevators = Array.new
 		@available_elevators = Array.new
 		@floors_left = Array.new
-
-
+		@people = people
 
 		@numfloors.to_i.times do |f|
 			@floors.push(Floor.new(f))
@@ -24,6 +24,11 @@ class Building
 			@elevators.push(Elevator.new(e))
 
 		end
+
+		@people.each do |p|
+			@floors[p.current_floor].people.push(p)
+		end
+
 			update
 
 	end
@@ -39,10 +44,11 @@ class Building
 
 
 	def to_s
-		puts "Building has #{@numfloors} floors and #{@numelevators} elevators."
+		s = "Building has #{@numfloors} floors, #{@people.length} people and #{@numelevators} elevators.\n"
 		@floors.reverse.each do |f|
-			puts f.to_s
+			s = s + f.to_s
 		end
+		return s
 	end
 
 	def move_elevators
@@ -52,24 +58,20 @@ class Building
 	end
 
 	def update_floors
-		f = @floors_left.pop
-		if !f.nil?
-			call_elevator(f.number)
-		end
 		@floors.each do |f|
 		f.update
 		end
 
 	end
 
-	def call_elevator(floor)
+	def call_elevator
+		p = @people.last
+		floor = p.intended_floor 
 		if !@floors[floor].nil?
 				find_available_elevators
 				e = @available_elevators.pop
-				if e.nil?
-					@floors_left.push(@floors[floor])
-				else
-				e.set_destination(floor)
+				if !e.nil?
+				e.pick_up(p)
 			end
 		end
 

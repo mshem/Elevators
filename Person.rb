@@ -1,7 +1,5 @@
 class Person
 
-	attr_reader :current_floor, :intended_floor
-
 	def initialize(current_floor, intended_floor)
 		@current_floor=current_floor
 		@intended_floor=intended_floor

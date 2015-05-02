@@ -19,26 +19,27 @@ puts "How many elevators?"
 @numelevators = gets.chomp
 end
 
+
 @numticks=""
 while !is_numeric? @numticks
 puts "How many ticks?"
 @numticks = gets.chomp
 end
 
-@building = Building.new($numfloors, @numelevators)
+p=Person.new(0,3)
+@people = Array.new
+@people.push(p)
+
+@building = Building.new($numfloors, @numelevators, @people)
 
 
 
 
 
 @building.to_s
-@building.call_elevator(2) 
-@building.call_elevator(0)
-@building.call_elevator(1)
 
-
-6.times do |t|
+@numticks.to_i.times do |t|
 	@building.update
-	@building.to_s
+	puts @building.to_s
 end 
 

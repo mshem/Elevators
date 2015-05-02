@@ -24,9 +24,33 @@ class Floor
 
 
 	def update
+		fill_elevators
+		empty_elevators
 		@elevators.each do |e|
 			if e.current_floor != @number
 				remove_elevator(e)
+			end
+		end
+	end
+
+	def empty_elevators
+		@elevators.each do |e|
+			p = e.drop_off
+			if !p.nil?
+				@people.push(p)
+			end
+		end
+	end
+
+	def fill_elevators
+		@people.each do |p|
+			if !p.nil?
+				if p.intended_floor != number
+					if !@elevators.last.nil?
+						@elevators.last.pick_up(p)
+						@people.delete(p)
+					end
+				end
 			end
 		end
 	end
@@ -36,6 +60,10 @@ class Floor
 	end
 
 	def to_s
-		"Floor #{@number} has #{@elevators.length} elevators."
+		s = "Floor #{@number} has #{@people.length} people and #{@elevators.length} elevators. "
+		@elevators.each do |e|
+			s = s + e.to_s
+		end
+		return s + "\n"
 	end
 end
